@@ -1,8 +1,10 @@
 language: csharp
 solution: Red.Wine.sln
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: chmod +x ./deploy.sh && ./deploy.sh $NUGET_API_KEY $NUGET_SOURCE
-  on:
-    branch: master
+install:
+  - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - mono nuget.exe restore Red.Wine.sln
+script:
+  - xbuild /p:Configuration=Release Red.Wine.sln
+  - mono nuget.exe pack ./Red.Wine.nuspec -Version $MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
+  - mono nuget.exe setApiKey $NUGET_API_KEY -Source $NUGET_SOURCE -Verbosity quiet
+  - mono nuget.exe push Red.Wine.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -Source $NUGET_SOURCE
