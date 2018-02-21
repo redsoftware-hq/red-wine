@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Red.Wine
 {
-    public class BaseModel
+    public class WineModel
     {
         public string LastModifiedBy { get; protected internal set; }
         [Column(TypeName = "datetime2")]

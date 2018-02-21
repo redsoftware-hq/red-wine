@@ -1,0 +1,1 @@
+﻿nuget pack Red.Wine.csproj

@@ -53,9 +53,10 @@
   <ItemGroup>
     <Compile Include="Attributes\CopyToAttribute.cs" />
     <Compile Include="Attributes\IgnoreWhileCopyAttribute.cs" />
-    <Compile Include="BaseModel.cs" />
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="WineModel.cs" />
+    <Compile Include="WineRepository.cs" />
+    <Compile Include="_Enumerations.cs" />
+    <Compile Include="WineExtensions.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Picker\Pick.cs" />
     <Compile Include="Picker\PickConfig.cs" />
@@ -64,7 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Red.Wine.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="deploy.sh" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

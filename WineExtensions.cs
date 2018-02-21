@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Red.Wine
 {
-    public static class Extensions
+    public static class WineExtensions
     {
         public static T ToEnum<T>(this string value)
         {
