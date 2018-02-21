@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".travis.yml" />
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -72,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="deploy.sh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
