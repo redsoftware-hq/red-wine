@@ -1,6 +1,7 @@
 ﻿using Red.Wine.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -246,7 +247,7 @@ namespace Red.Wine
                             {
                                 enumValue = methodInfo.MakeGenericMethod(new[] { enumType }).Invoke(propertyInfo.GetValue(from), new[] { propertyInfo.GetValue(from) });
                             }
-                            catch (Exception e)
+                            catch
                             {
                                 enumValue = -1;
                             }
