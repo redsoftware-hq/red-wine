@@ -47,7 +47,7 @@ namespace Red.Wine
 
         public void SetDefaults(DbContext context, string userId)
         {
-            if(Id != null)
+            if(Id == null)
             {
                 LastModifiedBy = userId;
                 LastModifiedOn = DateTime.Now;

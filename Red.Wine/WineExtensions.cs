@@ -62,7 +62,7 @@ namespace Red.Wine
                 {
                     entry.Entity.SetWhenModifying(userId, DateTime.Now);
                 }
-                else if (entry.State == EntityState.Added && entry.Entity.Id != null)
+                else if (entry.State == EntityState.Added && entry.Entity.Id == null)
                 {
                     entry.Entity.SetWhenInserting(
                         Guid.NewGuid().ToString(),

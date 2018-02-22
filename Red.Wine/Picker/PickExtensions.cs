@@ -144,6 +144,16 @@ namespace Red.Wine.Picker
             return dictionary;
         }
 
+        public static ICollection<IDictionary<string, object>> ToPickDictionaryCollection(this IEnumerable<object> entities, string config)
+        {
+            return ToPickDictionaryCollection(entities, PickUtilities.PickThese(config));
+        }
+
+        public static IDictionary<string, object> ToPickDictionary(this object obj, string config)
+        {
+            return ToPickDictionary(obj, PickUtilities.PickThese(config));
+        }
+
         public static IDictionary<string, object> AddItem(this IDictionary<string, object> dictionary, string key, object value)
         {
             if (dictionary.ContainsKey(key))
