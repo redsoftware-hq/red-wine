@@ -4,7 +4,9 @@ install:
   - nuget restore Red.Wine.sln
 script:
   - msbuild /p:Configuration=Release Red.Wine.sln
-  - nuget.exe update -self
+  - nuget -v
+  - nuget update -self
+  - nuget -v
   - nuget pack ./Red.Wine/Red.Wine.csproj -Version $MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
   - nuget setApiKey $NUGET_API_KEY -Source $NUGET_SOURCE -Verbosity quiet
   - nuget push Red.Wine.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -Source $NUGET_SOURCE
