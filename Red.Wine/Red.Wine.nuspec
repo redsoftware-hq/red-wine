@@ -8,5 +8,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Wine Framework</description>
     <copyright>Copyright 2018</copyright>
+    <dependencies>
+      <dependency id="AutoMapper" version="6.2.2" />
+      <dependency id="EntityFramework" version="6.2.0" />
+    </dependencies>
   </metadata>
 </package>
