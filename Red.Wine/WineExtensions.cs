@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Reflection;
 
 namespace Red.Wine
@@ -48,6 +50,46 @@ namespace Red.Wine
             }
 
             return false;
+        }
+
+        public static void UpdateContextWithDefaultValues(this DbContext context, string userId)
+        {
+            var entries = context.ChangeTracker.Entries<WineModel>().Where(x => x.State == EntityState.Modified || x.State == EntityState.Added);
+
+            foreach (var entry in entries)
+            {
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.SetWhenModifying(userId, DateTime.Now);
+                }
+                else if (entry.State == EntityState.Added && entry.Entity.Id != null)
+                {
+                    entry.Entity.SetWhenInserting(
+                        Guid.NewGuid().ToString(),
+                        userId,
+                        DateTime.Now,
+                        true,
+                        GetIncrementedKeyId(context, entry.Entity));
+                }
+            }
+        }
+
+        private static long GetIncrementedKeyId(DbContext context, WineModel entity)
+        {
+            var dbSet = context.Set(entity.GetType());
+            var entityList = Enumerable.Cast<WineModel>(dbSet).ToList();
+            long currentCount = 0;
+
+            if (entityList.Count > 0)
+            {
+                var lastInsertedEntity = entityList
+                    .OrderByDescending(t => t.KeyId)
+                    .First();
+
+                currentCount = lastInsertedEntity.KeyId;
+            }
+
+            return ++currentCount;
         }
     }
 }

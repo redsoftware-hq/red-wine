@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Red.Wine
 {
@@ -45,6 +43,38 @@ namespace Red.Wine
             CreatedOn = createdOn;
             IsActive = isActive;
             KeyId = keyId;
+        }
+
+        public void SetDefaults(DbContext context, string userId)
+        {
+            if(Id != null)
+            {
+                LastModifiedBy = userId;
+                LastModifiedOn = DateTime.Now;
+                Id = Guid.NewGuid().ToString();
+                CreatedBy = userId;
+                CreatedOn = DateTime.Now;
+                IsActive = true;
+                KeyId = GetIncrementedKeyId(context, this);
+            }
+        }
+
+        private static long GetIncrementedKeyId(DbContext context, WineModel entity)
+        {
+            var dbSet = context.Set(entity.GetType());
+            var entityList = Enumerable.Cast<WineModel>(dbSet).ToList();
+            long currentCount = 0;
+
+            if (entityList.Count > 0)
+            {
+                var lastInsertedEntity = entityList
+                    .OrderByDescending(t => t.KeyId)
+                    .First();
+
+                currentCount = lastInsertedEntity.KeyId;
+            }
+
+            return ++currentCount;
         }
     }
 }
