@@ -70,29 +70,6 @@ namespace Red.Wine
             return _dbSet.Find(id);
         }
 
-        public virtual TEntity Insert(object entitySubset)
-        {
-            TEntity entity = Activator.CreateInstance<TEntity>();
-
-            Copy(entity, entitySubset);
-            _dbSet.Add(entity);
-            UpdateContextWithDefaultValues();
-
-            return entity;
-        }
-
-        public virtual TEntity Update(object entitySubset)
-        {
-            string id = entitySubset.GetType().GetProperty("Id").GetValue(entitySubset, null).ToString();
-            TEntity entity = GetByID(id);
-
-            _dbSet.Attach(entity);
-            Copy(entity, entitySubset);
-            UpdateContextWithDefaultValues();
-
-            return entity;
-        }
-
         public virtual TEntity Delete(object id)
         {
             TEntity entity = _dbSet.Find(id);
@@ -107,7 +84,25 @@ namespace Red.Wine
             return entity;
         }
 
-        private void Copy(TEntity to, object from)
+        public virtual TEntity CreateNewWineModel(object options)
+        {
+            TEntity entity = _dbSet.Create();
+
+            Copy(options, entity);
+            entity.SetDefaults(_context, _userId);
+
+            return entity;
+        }
+
+        public virtual TEntity UpdateExistingWineModel(TEntity entity, object options)
+        {
+            Copy(options, entity);
+            entity.SetDefaults(_context, _userId);
+
+            return entity;
+        }
+
+        private void Copy(object from, WineModel to)
         {
             var propertyInfoArray = from.GetType().GetProperties();
 
@@ -266,35 +261,6 @@ namespace Red.Wine
                     throw new Exception(message, e);
                 }
             }
-        }
-
-        private void UpdateContextWithDefaultValues()
-        {
-            var entries = _context.ChangeTracker.Entries<WineModel>().Where(x => x.State == EntityState.Modified || x.State == EntityState.Added);
-
-            foreach (var entry in entries)
-            {
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Entity.LastModifiedBy = _userId;
-                    entry.Entity.LastModifiedOn = DateTime.Now;
-                }
-                else if (entry.State == EntityState.Added)
-                {
-                    entry.Entity.Id = Guid.NewGuid().ToString();
-                    entry.Entity.CreatedBy = _userId;
-                    entry.Entity.CreatedOn = DateTime.Now;
-                    entry.Entity.IsActive = true;
-                    entry.Entity.KeyId = GetIncrementedKeyId(); //Bug: entry.Entity type needs to be passed
-                }
-            }
-        }
-
-        // Needs to operate on the type passed. _dbSet is useless.
-        private long GetIncrementedKeyId()
-        {
-            var entity = _dbSet.OrderByDescending(t => t.KeyId).First();
-            return ++entity.KeyId;
         }
     }
 }
