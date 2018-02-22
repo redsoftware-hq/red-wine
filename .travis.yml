@@ -5,8 +5,7 @@ before_install:
   - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - mono .nuget/nuget.exe # Output NuGet's version number
 install:
-  - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-   - mono .nuget/nuget.exe restore Red.Wine.sln -Verbosity detailed
+  - mono .nuget/nuget.exe restore Red.Wine.sln -Verbosity detailed
 script:
   - msbuild /p:Configuration=Release Red.Wine.sln
   - mono .nuget/nuget.exe update -self
