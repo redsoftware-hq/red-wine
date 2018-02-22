@@ -10,6 +10,6 @@ script:
   - msbuild /p:Configuration=Release Red.Wine.sln
   - mono .nuget/nuget.exe update -self
   - mono .nuget/nuget.exe # Output NuGet's version number
-  - mono .nuget/nuget.exe pack ./Red.Wine/Red.Wine.csproj -MsbuildPath /usr/lib/mono/msbuild/15.0/bin/ -Version $MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
+  - mono .nuget/nuget.exe pack ./Red.Wine/Red.Wine.csproj -Prop Configuration=Release -MsbuildPath /usr/lib/mono/msbuild/15.0/bin/ -Version $MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
   - mono .nuget/nuget.exe setApiKey $NUGET_API_KEY -Source $NUGET_SOURCE -Verbosity quiet
   - mono .nuget/nuget.exe push Red.Wine.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -Source $NUGET_SOURCE
