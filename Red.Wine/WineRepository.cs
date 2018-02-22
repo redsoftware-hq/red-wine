@@ -247,7 +247,7 @@ namespace Red.Wine
                             {
                                 enumValue = methodInfo.MakeGenericMethod(new[] { enumType }).Invoke(propertyInfo.GetValue(from), new[] { propertyInfo.GetValue(from) });
                             }
-                            catch (Exception e)
+                            catch
                             {
                                 enumValue = -1;
                             }
