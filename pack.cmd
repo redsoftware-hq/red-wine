@@ -1,0 +1,1 @@
+nuget pack Red.Wine/Red.Wine.csproj -properties Configuration=Release -Version 1.0.29

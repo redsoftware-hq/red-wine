@@ -7,16 +7,16 @@ namespace Red.Wine
 {
     public class WineModel
     {
-        public string LastModifiedBy { get; protected internal set; }
+        public virtual string LastModifiedBy { get; protected internal set; }
         [Column(TypeName = "datetime2")]
-        public DateTime LastModifiedOn { get; protected internal set; }
-        public string Id { get; protected internal set; }
-        public string CreatedBy { get; protected internal set; }
+        public virtual DateTime LastModifiedOn { get; protected internal set; }
+        public virtual string Id { get; protected internal set; }
+        public virtual string CreatedBy { get; protected internal set; }
         [Column(TypeName = "datetime2")]
-        public DateTime CreatedOn { get; protected internal set; }
-        public bool IsActive { get; protected internal set; }
-        public long KeyId { get; protected internal set; }
-        public bool IsDeleted { get; set; }
+        public virtual DateTime CreatedOn { get; protected internal set; }
+        public virtual bool IsActive { get; protected internal set; }
+        public virtual long KeyId { get; protected internal set; }
+        public virtual bool IsDeleted { get; set; }
 
         public void Set(string lastModifiedBy, DateTime lastModifiedOn, string id, string createdBy, DateTime createdOn, bool isActive, long keyId)
         {
