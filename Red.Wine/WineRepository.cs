@@ -90,6 +90,7 @@ namespace Red.Wine
 
             Copy(options, entity);
             entity.SetDefaults(_context, _userId);
+            _dbSet.Add(entity);
 
             return entity;
         }
@@ -98,6 +99,7 @@ namespace Red.Wine
         {
             Copy(options, entity);
             entity.SetDefaults(_context, _userId);
+            _dbSet.Attach(entity);
 
             return entity;
         }
@@ -130,7 +132,7 @@ namespace Red.Wine
                         var fromCollection = (System.Collections.IEnumerable)propertyInfo.GetValue(from);
                         var fromCollectionItemType = fromCollection.GetType().GetGenericArguments().Single();
                         var toRepositoryType = typeof(WineRepository<>).MakeGenericType(toCollectionItemType);
-                        var toRepositoryInstance = (dynamic)Activator.CreateInstance(toRepositoryType, _context);
+                        var toRepositoryInstance = (dynamic)Activator.CreateInstance(toRepositoryType, _context, _userId);
 
                         if (copyToAttribute.Relationship == Relationship.Dependency)
                         {
@@ -178,7 +180,7 @@ namespace Red.Wine
                             var methodInfo = mapper.GetType().GetMethod("Map");
                             var genericMethodInfo = methodInfo.MakeGenericMethod(copyToAttribute.From, copyToAttribute.To);
                             var fromRepositoryType = typeof(WineRepository<>).MakeGenericType(copyToAttribute.From);
-                            var fromRepositoryInstance = (dynamic)Activator.CreateInstance(fromRepositoryType, _context);
+                            var fromRepositoryInstance = (dynamic)Activator.CreateInstance(fromRepositoryType, _context, _userId);
 
                             if (fromCollectionItemType == typeof(string))
                             {
@@ -204,7 +206,7 @@ namespace Red.Wine
                                 else
                                 {
                                     var repositoryType = typeof(WineRepository<>).MakeGenericType(copyToAttribute.To);
-                                    var repositoryInstance = (dynamic)Activator.CreateInstance(repositoryType, _context);
+                                    var repositoryInstance = (dynamic)Activator.CreateInstance(repositoryType, _context, _userId);
 
                                     string entityName = null;
 

@@ -16,6 +16,7 @@ namespace Red.Wine
         public DateTime CreatedOn { get; protected internal set; }
         public bool IsActive { get; protected internal set; }
         public long KeyId { get; protected internal set; }
+        public bool IsDeleted { get; set; }
 
         public void Set(string lastModifiedBy, DateTime lastModifiedOn, string id, string createdBy, DateTime createdOn, bool isActive, long keyId)
         {
