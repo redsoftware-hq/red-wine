@@ -155,7 +155,8 @@ namespace Red.Wine
                         {
                             foreach (dynamic item in fromCollection)
                             {
-                                if (item.Id != null)
+                                var hasId = item.GetType().GetProperty("Id");
+                                if (hasId != null && item.Id != null)
                                 {
                                     var itemToUpdate = ((System.Collections.IEnumerable)toCollection).Cast<dynamic>().Where(i => i.Id == item.Id).FirstOrDefault();
 
@@ -164,12 +165,12 @@ namespace Red.Wine
                                         throw new Exception("Something is wrong with Id - Either mismatch or absence.");
                                     }
 
-                                    toRepositoryInstance.Copy(itemToUpdate, item);
+                                    toRepositoryInstance.Copy(item, itemToUpdate);
                                 }
-                                else if (item.Id == null)
+                                else if (hasId == null || item.Id == null)
                                 {
                                     var itemToAdd = (dynamic)Activator.CreateInstance(copyToAttribute.To);
-                                    toRepositoryInstance.Copy(itemToAdd, item);
+                                    toRepositoryInstance.Copy(item, itemToAdd);
                                     toCollection.Add(itemToAdd);
                                 }
                             }

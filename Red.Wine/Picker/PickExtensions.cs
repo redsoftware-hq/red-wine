@@ -35,6 +35,12 @@ namespace Red.Wine.Picker
                     object propertyValue = propertyInfo.ResolveValue(obj);
                     PickConfig propertyPickConfig = pick.PickConfig;
 
+                    if(propertyInfo.PropertyType == typeof(Dictionary<string, object>))
+                    {
+                        dictionary.AddItem(propertyName, propertyValue);
+                        continue;
+                    }
+
                     // Normal property
                     if (propertyInfo.IsNormalProperty())
                     {
@@ -181,6 +187,16 @@ namespace Red.Wine.Picker
             {
                 return propertyValue;
             }
+        }
+
+        public static IDictionary<string, object> Merge(this IDictionary<string, object> dictionary, IDictionary<string, object> dictionaryToMerge)
+        {
+            foreach(var kvp in dictionaryToMerge)
+            {
+                dictionary.AddItem(kvp.Key, kvp.Value);
+            }
+
+            return dictionary;
         }
     }
 }
