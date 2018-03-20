@@ -56,39 +56,8 @@ namespace Red.Wine
                 CreatedBy = userId;
                 CreatedOn = DateTime.Now;
                 IsActive = true;
-                KeyId = GetIncrementedKeyId(context, this);
+                KeyId = WineExtensions.GetIncrementedKeyId(context, this);
             }
-        }
-
-        private static long GetIncrementedKeyId(DbContext context, WineModel entity)
-        {
-            var dbSet = context.Set(entity.GetType());
-            var dbEntitiesList = Enumerable.Cast<WineModel>(dbSet).ToList();
-            var localDbEntitiesList = Enumerable.Cast<WineModel>(dbSet.Local).ToList();
-            long currentCount = 0;
-
-            if (dbEntitiesList.Count > 0)
-            {
-                var lastInsertedEntity = dbEntitiesList
-                    .OrderByDescending(t => t.KeyId)
-                    .First();
-
-                currentCount = lastInsertedEntity.KeyId;
-            }
-
-            if (localDbEntitiesList.Count > 0)
-            {
-                var lastLocalEntity = localDbEntitiesList
-                    .OrderByDescending(t => t.KeyId)
-                    .First();
-
-                if (lastLocalEntity.KeyId > currentCount)
-                {
-                    currentCount = lastLocalEntity.KeyId;
-                }
-            }
-
-            return ++currentCount;
         }
     }
 }
