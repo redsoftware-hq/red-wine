@@ -100,6 +100,7 @@ namespace Red.Wine
             Copy(options, entity);
             entity.SetDefaults(_context, _userId);
             _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
 
             return entity;
         }
